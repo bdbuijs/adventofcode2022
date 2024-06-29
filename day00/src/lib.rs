@@ -34,15 +34,15 @@ mod tests {
 
     #[test]
     fn part1() {
-        let input = "";
-        let result = process_part1(input);
+        let input = fs::read_to_string("./sample.txt").unwrap();
+        let result = process_part1(&input);
         assert_eq!(result, "");
     }
 
     #[test]
     fn part2() {
-        let input = "";
-        let result = process_part2(input);
+        let input = fs::read_to_string("./sample.txt").unwrap();
+        let result = process_part2(&input);
         assert_eq!(result, "");
     }
 }
