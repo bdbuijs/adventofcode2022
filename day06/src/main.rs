@@ -5,7 +5,7 @@ fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
     let input: Vec<char> = input_file
-        .split("\n")
+        .split('\n')
         .next()
         .expect("Should have valid string!")
         .chars()

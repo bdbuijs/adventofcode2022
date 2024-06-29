@@ -4,8 +4,8 @@ fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
     let input: Vec<&str> = input_file.split("\n\n").collect();
-    let stacks_strings: Vec<&str> = input[0].split("\n").collect();
-    let moves: Vec<&str> = input[1].split("\n").collect();
+    let stacks_strings: Vec<&str> = input[0].split('\n').collect();
+    let moves: Vec<&str> = input[1].split('\n').collect();
     let mut stacks = vec![vec![]];
     for st in stacks_strings.into_iter() {
         stacks.push(Vec::from_iter(st.chars()))
@@ -14,7 +14,7 @@ fn main() {
     // part1
     let mut stacks1 = stacks.clone();
     for mv in moves.iter() {
-        let mut spl = mv.split(" ");
+        let mut spl = mv.split(' ');
         spl.next();
         let amount = spl
             .next()
@@ -40,7 +40,7 @@ fn main() {
     }
     let mut tops1: String = "".to_string();
     for mut stack in stacks1 {
-        if stack.len() > 0 {
+        if !stack.is_empty() {
             tops1.push(stack.pop().expect("Should not be empty!"));
         }
     }
@@ -51,7 +51,7 @@ fn main() {
     let mut stacks2 = stacks.clone();
 
     for mv in moves.iter() {
-        let mut spl = mv.split(" ");
+        let mut spl = mv.split(' ');
         spl.next();
         let amount = spl
             .next()
@@ -74,13 +74,13 @@ fn main() {
         for _ in 0..amount {
             temp_stack.push(stacks2[from].pop().expect("Should not be empty!"));
         }
-        while temp_stack.len() > 0 {
+        while !temp_stack.is_empty() {
             stacks2[to].push(temp_stack.pop().expect("Should not be empty!"))
         }
     }
     let mut tops2: String = "".to_string();
     for mut stack in stacks2 {
-        if stack.len() > 0 {
+        if !stack.is_empty() {
             tops2.push(stack.pop().expect("Should not be empty!"));
         }
     }

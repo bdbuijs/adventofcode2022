@@ -3,7 +3,7 @@ use std::fs;
 fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
-    let input: Vec<&str> = input_file.split("\n").collect();
+    let input: Vec<&str> = input_file.split('\n').collect();
 
     // part 1 & 2
     let mut cycle = 1;
@@ -18,9 +18,8 @@ fn main() {
             }
             _ => {
                 let num = instruction
-                    .split(" ")
-                    .skip(1)
-                    .next()
+                    .split(' ')
+                    .nth(1)
                     .expect("Should be valid number!")
                     .parse::<i32>()
                     .expect("Should be valid number!");
@@ -43,7 +42,7 @@ fn check(cycle: &i32, register: &i32) -> i32 {
         _ => print!(" "),
     };
     if position == 39 {
-        print!("\n");
+        println!();
     }
     match cycle {
         20 | 60 | 100 | 140 | 180 | 220 => cycle * register,

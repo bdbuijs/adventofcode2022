@@ -8,7 +8,7 @@ fn main() {
 
     let elves: Vec<usize> = // sorted with largest calorie count last
         input.iter()
-            .map(|x| x.split("\n")
+            .map(|x| x.split('\n')
                 .map(|y| y.parse::<usize>()
                     .expect("Need valid number!"))
                 .sum())

@@ -4,29 +4,29 @@ use std::fs;
 fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
-    let input: Vec<&str> = input_file.split("\n").collect();
+    let input: Vec<&str> = input_file.split('\n').collect();
 
     // part 1
-    let rounds1: Vec<(RPS, RPS)> = input
+    let rounds1: Vec<(Rps, Rps)> = input
         .iter()
         .map(|x| {
-            let mut split = x.split(" ");
+            let mut split = x.split(' ');
             (
-                RPS::from(split.next().expect("Need valid move!")),
-                RPS::from(split.next().expect("Need valid move!")),
+                Rps::from(split.next().expect("Need valid move!")),
+                Rps::from(split.next().expect("Need valid move!")),
             )
         })
         .collect();
 
-    let part1: usize = rounds1.iter().map(|game| score(game)).sum();
+    let part1: usize = rounds1.iter().map(score).sum();
     println!("The total score would be {}", part1);
 
     // part 2
-    let rounds2: Vec<(RPS, RPS)> = input
+    let rounds2: Vec<(Rps, Rps)> = input
         .iter()
         .map(|x| {
-            let mut split = x.split(" ");
-            let other = RPS::from(split.next().expect("Need valid move!"));
+            let mut split = x.split(' ');
+            let other = Rps::from(split.next().expect("Need valid move!"));
             let strategy = split.next().expect("Need a valid strategy!");
             let my_move = match strategy {
                 "X" => other.lose(),
@@ -38,15 +38,15 @@ fn main() {
         })
         .collect();
 
-    let part2: usize = rounds2.iter().map(|game| score(game)).sum();
+    let part2: usize = rounds2.iter().map(score).sum();
     println!("The total score would be {}", part2);
 }
 
-fn score(game: &(RPS, RPS)) -> usize {
+fn score(game: &(Rps, Rps)) -> usize {
     let mut s = match game.1 {
-        RPS::Rock => 1,
-        RPS::Paper => 2,
-        RPS::Scissors => 3,
+        Rps::Rock => 1,
+        Rps::Paper => 2,
+        Rps::Scissors => 3,
     };
     s += if game.0 < game.1 {
         6
@@ -59,13 +59,13 @@ fn score(game: &(RPS, RPS)) -> usize {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-enum RPS {
+enum Rps {
     Rock,
     Paper,
     Scissors,
 }
 
-impl RPS {
+impl Rps {
     fn from(s: &str) -> Self {
         match s {
             "A" | "X" => Self::Rock,
@@ -92,7 +92,7 @@ impl RPS {
     }
 }
 
-impl PartialOrd for RPS {
+impl PartialOrd for Rps {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         match self {
             Self::Rock => match other {

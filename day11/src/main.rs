@@ -2,7 +2,6 @@ use std::collections::VecDeque;
 use std::fs;
 
 fn main() {
-    let a = 8u8;
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
     let input: Vec<&str> = input_file.split("\n\n").collect();
@@ -57,27 +56,27 @@ impl std::fmt::Debug for Operation {
 
 impl From<&str> for Operation {
     fn from(s: &str) -> Self {
-        let mut split = s.split(" ");
+        let mut split = s.split(' ');
         let operand1 = split.next().expect("must be valid operand");
         let symbol = split.next().expect("must be valid operand");
         let operand2 = split.next().expect("must be valid operand");
         if operand1 == operand2 {
-            return Self {
+            Self {
                 signature: s.to_owned(),
                 func: Box::new(|x| x * x),
-            };
+            }
         } else {
             let right = operand2.parse::<usize>().expect("Should be valid operand");
             if symbol == "*" {
-                return Self {
+                Self {
                     signature: s.to_owned(),
                     func: Box::new(move |x| x * right),
-                };
+                }
             } else {
-                return Self {
+                Self {
                     signature: s.to_owned(),
                     func: Box::new(move |x| x + right),
-                };
+                }
             }
         }
     }
@@ -123,13 +122,13 @@ impl Monkey {
 
 impl From<&str> for Monkey {
     fn from(s: &str) -> Self {
-        let mut split = s.split("\n");
+        let mut split = s.split('\n');
         let index = split
             .next()
             .expect("Must be valid monkey!")
             .strip_prefix("Monkey ")
             .expect("Must be valid monkey!")
-            .strip_suffix(":")
+            .strip_suffix(':')
             .expect("Must be valid monkey!")
             .parse::<usize>()
             .expect("Item must have a valid number!");

@@ -4,7 +4,7 @@ use std::fs;
 fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
-    let input: Vec<&str> = input_file.split("\n").collect();
+    let input: Vec<&str> = input_file.split('\n').collect();
 
     // part 1
     let mut total_priority = 0;

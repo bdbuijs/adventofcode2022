@@ -9,17 +9,17 @@ fn children<'a>(graph: &'a mut Graph, id: &usize) -> &'a mut Vec<usize> {
         ..
     }) = graph.get_mut(id)
     {
-        return c;
+        c
     } else {
         panic! {"can't get children of folder with id: {}", id};
     }
 }
 
-fn path_of(path: &Vec<&str>) -> String {
+fn path_of(path: &[&str]) -> String {
     let mut full_path = String::new();
     for el in path.iter() {
         full_path.push('>');
-        full_path.extend(el.chars());
+        full_path.push_str(el);
     }
     full_path
 }
@@ -31,7 +31,6 @@ enum Path {
         children: Vec<usize>,
     },
     File {
-        parent: usize,
         size: usize,
     },
 }
@@ -43,20 +42,15 @@ trait DiskSize {
 impl DiskSize for Path {
     fn size_on_disk(&self, graph: &Graph) -> usize {
         match self {
-            Path::Folder { children: c, .. } => {
+            Self::Folder { children: c, .. } => {
                 let mut total_size = 0;
                 for child in c.iter() {
                     let child_size = graph.get(child).unwrap().size_on_disk(graph);
                     total_size += child_size;
                 }
-                return total_size;
+                total_size
             }
-            Path::File { size: s, .. } => {
-                return *s;
-            }
-            _ => {
-                panic!("Trait not implemented for this type!");
-            }
+            Self::File { size: s, .. } => *s,
         }
     }
 }
@@ -64,7 +58,7 @@ impl DiskSize for Path {
 fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
-    let input: Vec<&str> = input_file.split("\n").collect();
+    let input: Vec<&str> = input_file.split('\n').collect();
 
     // part 1 & 2
     let mut id = 0;
@@ -75,7 +69,7 @@ fn main() {
     let mut index = 0;
     while index < input.len() {
         let line = input[index];
-        let mut words = line.split(" ");
+        let mut words = line.split(' ');
         assert_eq!(words.next().unwrap(), "$");
         match words.next() {
             Some("cd") => {
@@ -114,7 +108,7 @@ fn main() {
             Some("ls") => {
                 index += 1;
                 while index < input.len() {
-                    let mut nxt = input[index].split(" ");
+                    let mut nxt = input[index].split(' ');
                     let first_part = nxt.next();
                     match first_part {
                         Some("$") => {
@@ -124,12 +118,12 @@ fn main() {
                         Some("dir") => {
                             let mut p = path_of(&current_path);
                             p.push('>');
-                            p.extend(nxt.next().expect("name must follow dir").chars());
+                            p.push_str(nxt.next().expect("name must follow dir"));
                             ids.insert(p, id);
                             graph.insert(
                                 id,
                                 Path::Folder {
-                                    parent: current_id.clone(),
+                                    parent: current_id,
                                     children: Vec::new(),
                                 },
                             );
@@ -140,15 +134,9 @@ fn main() {
                             let size = size.parse::<usize>().expect("must be valid size!");
                             let mut p = path_of(&current_path);
                             p.push('>');
-                            p.extend(nxt.next().expect("name must follow size").chars());
+                            p.push_str(nxt.next().expect("name must follow size"));
                             ids.insert(p, id);
-                            graph.insert(
-                                id,
-                                Path::File {
-                                    parent: current_id.unwrap(),
-                                    size: size,
-                                },
-                            );
+                            graph.insert(id, Path::File { size });
                             children(&mut graph, &current_id.unwrap()).push(id);
                             id += 1;
                         }
@@ -196,7 +184,7 @@ fn main() {
 
     let mut options = Vec::new();
     let min_size = 30_000_000 - free_space;
-    for (k, v) in graph.iter() {
+    for (_k, v) in graph.iter() {
         match v {
             Path::File { .. } => {
                 continue;

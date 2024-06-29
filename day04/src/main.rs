@@ -4,16 +4,16 @@ use std::fs;
 fn main() {
     let file_path = "input.txt";
     let input_file = fs::read_to_string(file_path).expect("Should have been able to read the file");
-    let input: Vec<&str> = input_file.split("\n").collect();
+    let input: Vec<&str> = input_file.split('\n').collect();
 
     // part 1 & 2
     let mut contained = 0;
     let mut overlap = 0;
     for row in input.iter() {
         let elves: Vec<Vec<usize>> = row
-            .split(",")
+            .split(',')
             .map(|x| {
-                x.split("-")
+                x.split('-')
                     .map(|y| y.parse::<usize>().expect("Must be valid number!"))
                     .collect()
             })
