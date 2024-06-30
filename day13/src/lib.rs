@@ -36,7 +36,7 @@ mod tests {
     fn part1() {
         let input = fs::read_to_string("./example.txt").unwrap();
         let result = process_part1(&input);
-        assert_eq!(result, "");
+        assert_eq!(result, "13");
     }
 
     #[test]
