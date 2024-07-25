@@ -1,8 +1,11 @@
 [package]
-name = "day23"
+name = "day24"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
 name = "answer"
 path = "src/lib.rs"
+
+[dependencies]
+once_cell = "1.19.0"

@@ -335,6 +335,7 @@ mod tests {
     fn part1() {
         let input = fs::read_to_string("./example.txt").unwrap();
         let result = process_part1(&input);
+        3_isize.rem_euclid(3);
         assert_eq!(result, "6032");
     }
 
